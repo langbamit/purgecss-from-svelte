@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows]
- - Version of purgecss-from-html [e.g. 0.21.0]
+ - Version of purgecss-from-svelte [e.g. 0.21.0]
 
 **Additional context**
 Add any other context about the problem here.

@@ -1,10 +1,10 @@
 {
-    "name": "purgecss-from-html",
+    "name": "purgecss-from-svelte",
     "version": "1.1.0",
-    "description": "Html extractor for purgecss - get all selectors from a html file",
-    "main": "./lib/purgehtml.js",
-    "module": "./lib/purgehtml.es.js",
-    "jsnext:main": "./lib/purgehtml.es.js",
+    "description": "Svelte extractor for purgecss - get all selectors from a svelte file",
+    "main": "./lib/purgesvelte.js",
+    "module": "./lib/purgesvelte.es.js",
+    "jsnext:main": "./lib/purgesvelte.es.js",
     "scripts": {
         "dev": "rollup -c rollup.config.js -w",
         "build": "rollup -c rollup.config.js",
@@ -13,7 +13,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/FullHuman/purgecss-from-html.git"
+        "url": "git+https://github.com/langbamit/purgecss-from-svelte.git"
     },
     "keywords": [
         "purgecss-from",
@@ -22,19 +22,21 @@
         "css",
         "html"
     ],
-    "author": "Ffloriel",
+    "author": "langbamit",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/FullHuman/purgecss-from-html/issues"
+        "url": "https://github.com/langbamit/purgecss-from-svelte/issues"
     },
-    "homepage": "https://github.com/FullHuman/purgecss-from-html#readme",
+    "homepage": "https://github.com/langbamit/purgecss-from-svelte#readme",
     "devDependencies": {
         "@babel/preset-env": "^7.0.0",
         "eslint": "^5.12.1",
         "jest": "^24.0.0",
+        "lodash": "^4.17.11",
+        "postcss": "^7.0.14",
+        "postcss-selector-parser": "^6.0.2",
         "rollup": "^1.1.2",
         "rollup-plugin-babel": "^4.3.2",
-        "rollup-plugin-commonjs": "^9.2.0",
         "rollup-plugin-node-resolve": "^4.0.0",
         "rollup-watch": "^4.3.1"
     },

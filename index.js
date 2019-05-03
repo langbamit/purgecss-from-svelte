@@ -11,9 +11,16 @@ const getSelectorsInNodes = node => {
             // add classes names
             if (childNode.attribs) {
                 if (childNode.attribs.class)
-                    classes = childNode.attribs.class.split(" ")
+					classes = childNode.attribs.class.split(" ")
+				Object.keys(childNode.attribs).forEach(attr => {
+					if(attr.startsWith('class:')) {
+						classes.push(attr.substring(6))
+					}
+				})
                 if (childNode.attribs.id) ids = childNode.attribs.id.split(" ")
-            }
+			}
+			
+
             selectors = [
                 ...selectors,
                 tag,
@@ -28,10 +35,10 @@ const getSelectorsInNodes = node => {
             ]
         }
     }
-    return selectors
+    return selectors;
 }
 
-class PurgeFromHtml {
+class PurgeFromSvelte {
     static extract(content) {
         const tree = parse5.parse(content, {
             treeAdapter: htmlparser2
@@ -40,4 +47,4 @@ class PurgeFromHtml {
     }
 }
 
-export default PurgeFromHtml
+export default PurgeFromSvelte

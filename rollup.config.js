@@ -1,22 +1,20 @@
 import babel from "rollup-plugin-babel"
-import commonjs from "rollup-plugin-commonjs"
 import resolve from "rollup-plugin-node-resolve"
 
 export default {
     input: "index.js",
     output: [
         {
-            file: "lib/purgehtml.es.js",
+            file: "lib/purgesvelte.es.js",
             format: "es"
         },
         {
-            file: "lib/purgehtml.js",
+            file: "lib/purgesvelte.js",
             format: "cjs"
         }
     ],
     plugins: [
         resolve(),
-        // commonjs(),
         babel()
     ],
     external: ["parse5", "parse5-htmlparser2-tree-adapter"]
