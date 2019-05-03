@@ -1,6 +1,6 @@
 {
     "name": "purgecss-from-svelte",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Svelte extractor for purgecss - get all selectors from a svelte file",
     "main": "./lib/purgesvelte.js",
     "module": "./lib/purgesvelte.es.js",
