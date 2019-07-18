@@ -1,4 +1,4 @@
-import * as htmlparser2 from "htmlparser2";
+import {default as htmlparser2} from "htmlparser2";
 
 const should_ignore = tag => {
   if (tag.startsWith("svelte:")) {

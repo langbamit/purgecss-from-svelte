@@ -17,5 +17,5 @@ export default {
         resolve(),
         babel()
     ],
-    external: ["parse5", "parse5-htmlparser2-tree-adapter"]
+    external: ["htmlparser2"]
 }
