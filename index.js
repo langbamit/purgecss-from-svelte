@@ -1,50 +1,48 @@
-import parse5 from "parse5"
-import htmlparser2 from "parse5-htmlparser2-tree-adapter"
+import * as htmlparser2 from "htmlparser2";
 
-const getSelectorsInNodes = node => {
-    let selectors = []
-    for (let childNode of node.children) {
-        if (childNode.type === "tag") {
-            let tag, classes = [], ids = []
-            // add tag name
-            tag = childNode.name
-            // add classes names
-            if (childNode.attribs) {
-                if (childNode.attribs.class)
-					classes = childNode.attribs.class.split(" ")
-				Object.keys(childNode.attribs).forEach(attr => {
-					if(attr.startsWith('class:')) {
-						classes.push(attr.substring(6))
-					}
-				})
-                if (childNode.attribs.id) ids = childNode.attribs.id.split(" ")
-			}
-			
-
-            selectors = [
-                ...selectors,
-                tag,
-                ...classes,
-                ...ids,
-                ...getSelectorsInNodes(childNode)
-            ]
-        } else if (childNode.type === "root") {
-            selectors = [
-                ...selectors,
-                ...getSelectorsInNodes(childNode)
-            ]
-        }
-    }
-    return selectors;
-}
+const should_ignore = tag => {
+  if (tag.startsWith("svelte:")) {
+    return true;
+  }
+  if (tag == "script" || tag == "style") {
+    return true;
+  }
+  return false;
+};
 
 class PurgeFromSvelte {
-    static extract(content) {
-        const tree = parse5.parse(content, {
-            treeAdapter: htmlparser2
-        })
-        return getSelectorsInNodes(tree)
-    }
+  static extract(content) {
+    let selectors = [];
+    const parser = new htmlparser2.Parser(
+      {
+        onopentag: (tag, attribs) => {
+          if (should_ignore(tag)) {
+            return;
+          }
+          selectors.push(tag);
+          if (attribs) {
+            if (attribs.class) {
+                const classes = attribs.class.match(/[A-Za-z0-9-_:/]+/g) || [];
+                selectors = selectors.concat(classes);
+            }
+
+            Object.keys(attribs).forEach(attr => {
+              if (attr.startsWith("class:")) {
+                selectors.push(attr.substring("class:".length));
+              }
+            });
+            if (attribs.id) {
+              selectors.push(attribs.id);
+            }
+          }
+        }
+      },
+      { decodeEntities: true, lowerCaseAttributeNames: false }
+    );
+    parser.write(content);
+    parser.end();
+    return [...new Set(selectors)];
+  }
 }
 
-export default PurgeFromSvelte
+export default PurgeFromSvelte;
