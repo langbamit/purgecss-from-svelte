@@ -112,5 +112,16 @@ test_list.push([
   ].sort()
 ]);
 
+test_list.push([
+  "Should ignore component's tag",
+  `
+<Component>
+  <div>content</div>
+</Component>
+  `,
+  [
+    "div"
+  ].sort()
+]);
 
 export default test_list;
