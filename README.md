@@ -27,7 +27,7 @@ const options = {
   content: ["./src/**/*.svelte"],
   extractors: [
     {
-      extractor: PurgeSvelte,
+      extractor: content => PurgeSvelte.extract(content),
       extensions: ["svelte"]
     }
   ]
