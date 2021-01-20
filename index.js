@@ -1,33 +1,42 @@
-import { default as htmlparser2 } from "htmlparser2";
+import {Parser} from "htmlparser2";
 
-const should_ignore = tag => {
-  if (tag.length) {
-    if (tag[0] === tag[0].toUpperCase()) {
-      return true;
-    }
-    if (tag.startsWith("svelte:")) {
-      return true;
-    }
-    if (tag == "script" || tag == "style") {
-      return true;
-    }
-  }
-  return false;
-};
 
 class PurgeFromSvelte {
   static extract(content) {
     let selectors = [];
-    const parser = new htmlparser2.Parser(
+
+    let insideHeadTag = false;
+
+    const should_ignore = tag => {
+      if(insideHeadTag) return true;
+      if (tag.length) {
+        // Ignore svelte Component tag
+        if (tag[0] === tag[0].toUpperCase()) {
+          return true;
+        }
+        if (tag.startsWith("svelte:")) {
+          return true;
+        }
+        if (tag == "script" || tag == "style") {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const parser = new Parser(
       {
         onopentag: (tag, attribs) => {
+          if(tag === "head" || tag === "svelte:head") {
+            insideHeadTag = true;
+          }
           if (should_ignore(tag)) {
             return;
           }
           selectors.push(tag);
           if (attribs) {
             if (attribs.class) {
-              const classes = attribs.class.match(/[A-Za-z0-9-_:/]+/g) || [];
+              const classes = attribs.class.match(/([\w\d-/:%.]+)/g) || [];
               selectors = selectors.concat(classes);
             }
 
@@ -39,6 +48,26 @@ class PurgeFromSvelte {
             if (attribs.id) {
               selectors.push(attribs.id);
             }
+          }
+        },
+        oncomment(comment) {
+          if(insideHeadTag) return;
+          if (comment.trim().startsWith('class:')) {
+            comment
+              .trim()
+              .substring("class:".length)
+              .split(",")
+              .map(s => s.trim())
+              .forEach(kclass => {
+                if(kclass) {
+                  selectors.push(kclass)
+                } 
+              });
+          }
+        },
+        onclosetag(tag) {
+          if(tag === "head" || tag === "svelte:head") {
+            insideHeadTag = false;
           }
         }
       },

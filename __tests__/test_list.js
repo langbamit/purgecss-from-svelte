@@ -124,4 +124,59 @@ test_list.push([
   ].sort()
 ]);
 
+test_list.push([
+  "Match all support chars in classes",
+  `
+  <div class="abc:def 100%" class:50% class:10%={true}>content</div>
+  `,
+  [
+    "div",
+    "abc:def",
+    "100%",
+    "10%",
+    "50%",
+  ].sort()
+]);
+
+test_list.push([
+  "Match all support chars in classes",
+  `
+  <div class="abc:def 100%" class:50% class:10%={true}>content</div>
+  `,
+  [
+    "div",
+    "abc:def",
+    "100%",
+    "10%",
+    "50%",
+  ].sort()
+]);
+
+test_list.push([
+  "Support specific comment",
+  `
+  <!-- class:foo,bar, baz -->
+  `,
+  [
+    "foo",
+    "bar",
+    "baz",
+  ].sort()
+]);
+
+test_list.push([
+  "Ignore inside head tag",
+  `
+  <head>
+    <meta charset="utf-8">
+    <!-- class:foo,bar, baz -->
+  </head>
+  <div/>
+  `,
+  [
+    "div",
+  ].sort()
+]);
+
+
 export default test_list;

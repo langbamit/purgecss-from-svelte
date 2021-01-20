@@ -1,4 +1,4 @@
-import PurgesSvelte from "./../index.js"
+import PurgesSvelte from "../index.js"
 import test_list from "./test_list"
 
 test_list.forEach(([name, input, expected]) => {
